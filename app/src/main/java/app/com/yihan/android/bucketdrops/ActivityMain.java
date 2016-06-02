@@ -3,6 +3,7 @@ package app.com.yihan.android.bucketdrops;
 import android.graphics.Matrix;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,7 @@ public class ActivityMain extends AppCompatActivity {
 
     Toolbar mToolbar;
     Button mBtnAdd;
+    RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,8 @@ public class ActivityMain extends AppCompatActivity {
         });
         setSupportActionBar(mToolbar);
         initBackgroundImage();
+        mRecyclerView = (RecyclerView) findViewById(R.id.rv_drops);
+        
     }
 
     private void showDialogAdd() {
