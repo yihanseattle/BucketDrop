@@ -21,7 +21,7 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/btn_add_margin"
         android:background="@drawable/bg_btn_add_it"
-        android:fontFamily="@string/sans-serif-thin"
+        android:fontFamily="sans-serif-thin"
         android:paddingBottom="@dimen/btn_add_vertical_padding"
         android:paddingLeft="@dimen/btn_add_horizontal_padding"
         android:paddingRight="@dimen/btn_add_horizontal_padding"

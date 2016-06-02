@@ -25,11 +25,17 @@ public class ActivityMain extends AppCompatActivity {
         mBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ActivityMain.this, "asdfsdafadfadsf", Toast.LENGTH_SHORT).show();
+                showDialogAdd();
             }
         });
         setSupportActionBar(mToolbar);
         initBackgroundImage();
+    }
+
+    private void showDialogAdd() {
+        DialogAdd dialog = new DialogAdd();
+
+        dialog.show(getSupportFragmentManager(), "Add");
     }
 
     private void initBackgroundImage() {
