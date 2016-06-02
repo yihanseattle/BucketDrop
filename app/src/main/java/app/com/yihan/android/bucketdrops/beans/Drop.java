@@ -1,4 +1,4 @@
-package beans;
+package app.com.yihan.android.bucketdrops.beans;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

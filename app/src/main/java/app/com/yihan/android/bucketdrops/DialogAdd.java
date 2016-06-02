@@ -11,7 +11,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import beans.Drop;
+import app.com.yihan.android.bucketdrops.beans.Drop;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
