@@ -33,7 +33,7 @@ public class ActivityMain extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         initBackgroundImage();
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_drops);
-        
+
     }
 
     private void showDialogAdd() {
