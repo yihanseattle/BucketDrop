@@ -1,6 +1,5 @@
 package app.com.yihan.android.bucketdrops;
 
-import android.graphics.Matrix;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,17 +8,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
 import app.com.yihan.android.bucketdrops.adapters.AdapterDrops;
+import app.com.yihan.android.bucketdrops.beans.Drop;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class ActivityMain extends AppCompatActivity {
 
     Toolbar mToolbar;
     Button mBtnAdd;
     RecyclerView mRecyclerView;
+    Realm mRealm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,9 @@ public class ActivityMain extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_drops);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(manager);
-        mRecyclerView.setAdapter(new AdapterDrops(this));
+        mRealm = Realm.getDefaultInstance();
+        RealmResults<Drop> results = mRealm.where(Drop.class).findAllAsync();
+        mRecyclerView.setAdapter(new AdapterDrops(this, results));
 
     }
 
