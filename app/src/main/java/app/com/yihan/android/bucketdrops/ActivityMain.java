@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 
 import app.com.yihan.android.bucketdrops.adapters.AdapterDrops;
+import app.com.yihan.android.bucketdrops.adapters.AddListener;
 import app.com.yihan.android.bucketdrops.adapters.Divider;
 import app.com.yihan.android.bucketdrops.beans.Drop;
 import app.com.yihan.android.bucketdrops.widgets.BucketRecyclerView;
@@ -40,18 +41,28 @@ public class ActivityMain extends AppCompatActivity {
         }
     };
 
+    private View.OnClickListener mBtnAddListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            showDialogAdd();
+        }
+    };
+
+    private AddListener mAddListener = new AddListener() {
+        @Override
+        public void add() {
+            showDialogAdd();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mBtnAdd = (Button) findViewById(R.id.btn_add);
-        mBtnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialogAdd();
-            }
-        });
+        mBtnAdd.setOnClickListener(mBtnAddListener);
         setSupportActionBar(mToolbar);
         initBackgroundImage();
 
@@ -61,7 +72,7 @@ public class ActivityMain extends AppCompatActivity {
 
         mRealm = Realm.getDefaultInstance();
         mResults = mRealm.where(Drop.class).findAllAsync();
-        mAdapter = new AdapterDrops(this, mResults);
+        mAdapter = new AdapterDrops(this, mResults, mAddListener);
         mRecyclerView.setAdapter(mAdapter);
 
         mEmptyView = findViewById(R.id.empty_drop);
