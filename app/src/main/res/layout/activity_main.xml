@@ -6,24 +6,22 @@
     android:layout_height="match_parent"
     tools:context="app.com.yihan.android.bucketdrops.ActivityMain">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
-
     <ImageView
         android:id="@+id/iv_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
         android:scaleType="centerCrop"
         />
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"/>
+
     <app.com.yihan.android.bucketdrops.widgets.BucketRecyclerView
         android:id="@+id/rv_drops"
-        android:layout_below="@id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
+        android:layout_below="@id/toolbar"
 
         >
 
@@ -31,6 +29,7 @@
     </app.com.yihan.android.bucketdrops.widgets.BucketRecyclerView>
 
 
-    <include layout="@layout/empty_drops"
-        android:id="@+id/empty_drop"/>
+    <include
+        android:id="@+id/empty_drop"
+        layout="@layout/empty_drops"/>
 </RelativeLayout>
