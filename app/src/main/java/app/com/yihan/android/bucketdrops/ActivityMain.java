@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import com.bumptech.glide.Glide;
 import app.com.yihan.android.bucketdrops.adapters.AdapterDrops;
 import app.com.yihan.android.bucketdrops.adapters.AddListener;
 import app.com.yihan.android.bucketdrops.adapters.Divider;
+import app.com.yihan.android.bucketdrops.adapters.SimpleTouchCallback;
 import app.com.yihan.android.bucketdrops.beans.Drop;
 import app.com.yihan.android.bucketdrops.widgets.BucketRecyclerView;
 import io.realm.Realm;
@@ -72,13 +74,16 @@ public class ActivityMain extends AppCompatActivity {
 
         mRealm = Realm.getDefaultInstance();
         mResults = mRealm.where(Drop.class).findAllAsync();
-        mAdapter = new AdapterDrops(this, mResults, mAddListener);
+        mAdapter = new AdapterDrops(this, mRealm, mResults, mAddListener);
         mRecyclerView.setAdapter(mAdapter);
 
         mEmptyView = findViewById(R.id.empty_drop);
         mRecyclerView.hideIfEmpty(mToolbar);
         mRecyclerView.showIfEmpty(mEmptyView);
         mRecyclerView.addItemDecoration(new Divider(this, LinearLayoutManager.VERTICAL));
+        SimpleTouchCallback callback = new SimpleTouchCallback(mAdapter);
+        ItemTouchHelper helper = new ItemTouchHelper(callback);
+        helper.attachToRecyclerView(mRecyclerView);
     }
 
     @Override

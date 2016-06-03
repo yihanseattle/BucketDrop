@@ -13,29 +13,33 @@ import java.util.ArrayList;
 
 import app.com.yihan.android.bucketdrops.R;
 import app.com.yihan.android.bucketdrops.beans.Drop;
+import io.realm.Realm;
 import io.realm.RealmResults;
 
 /**
  * Created by HanYi on 6/2/16.
  */
-public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder>  implements SwipeListener {
 
     public static final int ITEM = 0;
     public static final int FOOTER = 1;
 
     private LayoutInflater mInflater;
+    private Realm mRealm;
     private RealmResults<Drop> mResults;
     public static final String TAG = "VIVZ";
     private AddListener mAddListener;
 
-    public AdapterDrops(Context context, RealmResults<Drop> results) {
+    public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results) {
         mInflater = LayoutInflater.from(context);
+        mRealm = realm;
         update(results);
     }
 
-    public AdapterDrops(Context context, RealmResults<Drop> results, AddListener listener) {
+    public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results, AddListener listener) {
         mInflater = LayoutInflater.from(context);
         update(results);
+        mRealm = realm;
         mAddListener = listener;
     }
 
@@ -76,7 +80,22 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return mResults.size() + 1;
+        if (mResults == null || mResults.isEmpty()) {
+            return 0;
+        } else {
+            return mResults.size() + 1;
+        }
+
+    }
+
+    @Override
+    public void onSwipe(int position) {
+        if (position < mResults.size()) {
+            mRealm.beginTransaction();
+            mResults.get(position).removeFromRealm();
+            mRealm.commitTransaction();
+            notifyItemRemoved(position);
+        }
     }
 
     public static class DropHolder extends RecyclerView.ViewHolder {
@@ -93,6 +112,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         Button mBtnAdd;
         AddListener mListener;
+
         public FooterHolder(View itemView) {
             super(itemView);
             mBtnAdd = (Button) itemView.findViewById(R.id.btn_footer);
