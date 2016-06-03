@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 
 import app.com.yihan.android.bucketdrops.adapters.AdapterDrops;
 import app.com.yihan.android.bucketdrops.adapters.AddListener;
+import app.com.yihan.android.bucketdrops.adapters.CompleteListener;
 import app.com.yihan.android.bucketdrops.adapters.Divider;
 import app.com.yihan.android.bucketdrops.adapters.MarkListener;
 import app.com.yihan.android.bucketdrops.adapters.SimpleTouchCallback;
@@ -63,6 +64,13 @@ public class ActivityMain extends AppCompatActivity {
         @Override
         public void onMark(int position) {
             showDialogMark(position);
+        }
+    };
+
+    private CompleteListener mCompleteListener = new CompleteListener() {
+        @Override
+        public void onComplete(int position) {
+            mAdapter.markComplete(position);
         }
     };
 
@@ -117,6 +125,7 @@ public class ActivityMain extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putInt("POSITION", position);
         dialog.setArguments(bundle);
+        dialog.setCompleteListener(mCompleteListener);
         dialog.show(getSupportFragmentManager(), "Mark");
     }
 
