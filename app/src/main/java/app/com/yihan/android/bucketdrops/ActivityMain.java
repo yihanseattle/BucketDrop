@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 
 import app.com.yihan.android.bucketdrops.adapters.AdapterDrops;
+import app.com.yihan.android.bucketdrops.adapters.Divider;
 import app.com.yihan.android.bucketdrops.beans.Drop;
 import app.com.yihan.android.bucketdrops.widgets.BucketRecyclerView;
 import io.realm.Realm;
@@ -66,6 +67,7 @@ public class ActivityMain extends AppCompatActivity {
         mEmptyView = findViewById(R.id.empty_drop);
         mRecyclerView.hideIfEmpty(mToolbar);
         mRecyclerView.showIfEmpty(mEmptyView);
+        mRecyclerView.addItemDecoration(new Divider(this, LinearLayoutManager.VERTICAL));
     }
 
     @Override
