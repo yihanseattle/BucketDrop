@@ -25,7 +25,12 @@ public class AdapterDrops extends RecyclerView.Adapter<AdapterDrops.DropHolder> 
 
     public AdapterDrops(Context context, RealmResults<Drop> results) {
         mInflater = LayoutInflater.from(context);
+        update(results);
+    }
+
+    public void update(RealmResults<Drop> results) {
         mResult = results;
+        notifyDataSetChanged();
     }
 
 
