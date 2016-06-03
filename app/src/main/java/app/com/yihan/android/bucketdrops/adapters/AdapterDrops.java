@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,6 @@ import io.realm.RealmResults;
  * Created by HanYi on 6/2/16.
  */
 public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder>  implements SwipeListener {
-
     public static final int ITEM = 0;
     public static final int FOOTER = 1;
     private MarkListener mMarkListener;
@@ -34,11 +34,6 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public static final String TAG = "VIVZ";
     private AddListener mAddListener;
 
-    public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results) {
-        mInflater = LayoutInflater.from(context);
-        mRealm = realm;
-        update(results);
-    }
 
     public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results, AddListener listener, MarkListener markListener) {
         mInflater = LayoutInflater.from(context);
@@ -80,6 +75,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             DropHolder dropHolder = (DropHolder) holder;
             Drop drop = mResults.get(position);
             dropHolder.setWhat(drop.getWhat());
+            dropHolder.setWhen(drop.getWhen());
             dropHolder.setBackground(drop.isCompleted());
         }
     }
@@ -147,6 +143,10 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 drawable = ContextCompat.getDrawable(mContext, R.drawable.bg_row_drop);
             }
             Util.setBackground(mItemView, drawable);
+        }
+
+        public void setWhen(long when) {
+            mTextWhen.setText(DateUtils.getRelativeTimeSpanString(when,System.currentTimeMillis(),DateUtils.DAY_IN_MILLIS,DateUtils.FORMAT_ABBREV_ALL));
         }
     }
 

@@ -11,6 +11,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import java.util.Calendar;
+
 import app.com.yihan.android.bucketdrops.beans.Drop;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -20,38 +22,45 @@ import io.realm.RealmResults;
  * Created by HanYi on 6/1/16.
  */
 public class DialogAdd extends DialogFragment {
-
     private ImageButton mBtnClose;
     private EditText mInputWhat;
     private DatePicker mInputWhen;
     private Button mBtnAdd;
 
-
     private View.OnClickListener mBtnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
             int id = v.getId();
-
             switch (id) {
                 case R.id.btn_add_it:
                     addAction();
                     break;
             }
-
             dismiss();
         }
     };
 
+    //TODO process date
     private void addAction() {
+        //get the value of the 'goal' or 'to-do'
+        //get the time when it was added
         String what = mInputWhat.getText().toString();
+        String date = mInputWhen.getDayOfMonth() + "/" + mInputWhen.getMonth() + "/" + mInputWhen.getYear();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, mInputWhen.getDayOfMonth());
+        calendar.set(Calendar.MONTH, mInputWhen.getMonth());
+        calendar.set(Calendar.YEAR, mInputWhen.getYear());
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
         long now = System.currentTimeMillis();
         Realm realm = Realm.getDefaultInstance();
-        Drop drop = new Drop(what, now, 0, false);
+        Drop drop = new Drop(what, now, calendar.getTimeInMillis(), false);
         realm.beginTransaction();
         realm.copyToRealm(drop);
         realm.commitTransaction();
         realm.close();
+
     }
 
     public DialogAdd() {
