@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 
 import app.com.yihan.android.bucketdrops.adapters.AdapterDrops;
 import app.com.yihan.android.bucketdrops.beans.Drop;
+import app.com.yihan.android.bucketdrops.widgets.BucketRecyclerView;
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
@@ -23,10 +24,11 @@ public class ActivityMain extends AppCompatActivity {
     private static final String TAG = ActivityMain.class.getSimpleName();
     Toolbar mToolbar;
     Button mBtnAdd;
-    RecyclerView mRecyclerView;
+    BucketRecyclerView mRecyclerView;
     Realm mRealm;
     RealmResults<Drop> mResults;
     AdapterDrops mAdapter;
+    View mEmptyView;
 
     // listener for the database
     private RealmChangeListener mChangeListener = new RealmChangeListener() {
@@ -52,7 +54,7 @@ public class ActivityMain extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         initBackgroundImage();
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_drops);
+        mRecyclerView = (BucketRecyclerView) findViewById(R.id.rv_drops);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(manager);
 
@@ -60,6 +62,10 @@ public class ActivityMain extends AppCompatActivity {
         mResults = mRealm.where(Drop.class).findAllAsync();
         mAdapter = new AdapterDrops(this, mResults);
         mRecyclerView.setAdapter(mAdapter);
+
+        mEmptyView = findViewById(R.id.empty_drop);
+        mRecyclerView.hideIfEmpty(mToolbar);
+        mRecyclerView.showIfEmpty(mEmptyView);
     }
 
     @Override
