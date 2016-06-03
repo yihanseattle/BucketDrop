@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import app.com.yihan.android.bucketdrops.adapters.AdapterDrops;
 import app.com.yihan.android.bucketdrops.adapters.AddListener;
 import app.com.yihan.android.bucketdrops.adapters.Divider;
+import app.com.yihan.android.bucketdrops.adapters.MarkListener;
 import app.com.yihan.android.bucketdrops.adapters.SimpleTouchCallback;
 import app.com.yihan.android.bucketdrops.beans.Drop;
 import app.com.yihan.android.bucketdrops.widgets.BucketRecyclerView;
@@ -58,6 +59,13 @@ public class ActivityMain extends AppCompatActivity {
         }
     };
 
+    private MarkListener mMarkListener = new MarkListener() {
+        @Override
+        public void onMark(int position) {
+            showDialogMark(position);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +82,7 @@ public class ActivityMain extends AppCompatActivity {
 
         mRealm = Realm.getDefaultInstance();
         mResults = mRealm.where(Drop.class).findAllAsync();
-        mAdapter = new AdapterDrops(this, mRealm, mResults, mAddListener);
+        mAdapter = new AdapterDrops(this, mRealm, mResults, mAddListener, mMarkListener);
         mRecyclerView.setAdapter(mAdapter);
 
         mEmptyView = findViewById(R.id.empty_drop);
@@ -102,6 +110,14 @@ public class ActivityMain extends AppCompatActivity {
         DialogAdd dialog = new DialogAdd();
 
         dialog.show(getSupportFragmentManager(), "Add");
+    }
+
+    private void showDialogMark(int position) {
+        DialogMark dialog = new DialogMark();
+        Bundle bundle = new Bundle();
+        bundle.putInt("POSITION", position);
+        dialog.setArguments(bundle);
+        dialog.show(getSupportFragmentManager(), "Mark");
     }
 
     private void initBackgroundImage() {
