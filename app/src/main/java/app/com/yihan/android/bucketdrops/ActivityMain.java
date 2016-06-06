@@ -108,7 +108,7 @@ public class ActivityMain extends AppCompatActivity {
         ItemTouchHelper helper = new ItemTouchHelper(callback);
         helper.attachToRecyclerView(mRecyclerView);
 
-        int filterOption = load();
+        int filterOption = AppBucketDrops.load(this);
         loadResults(filterOption);
     }
 
@@ -141,25 +141,22 @@ public class ActivityMain extends AppCompatActivity {
                 break;
             case R.id.action_sort_ascending_date:
                 filterOption = Filter.LEAST_TIME_LEFT;
-                save(Filter.LEAST_TIME_LEFT);
                 break;
             case R.id.action_sort_descending_date:
                 filterOption = Filter.MOST_TIME_LEFT;
-                save(Filter.MOST_TIME_LEFT);
                 break;
             case R.id.action_show_complete:
                 filterOption = Filter.COMPLETE;
-                save(Filter.COMPLETE);
                 break;
             case R.id.action_show_incomplete:
                 filterOption = Filter.INCOMPLETE;
-                save(Filter.INCOMPLETE);
                 break;
             default:
                 handled = false;
                 break;
         }
         loadResults(filterOption);
+        AppBucketDrops.save(this, filterOption);
         return handled;
     }
 
@@ -207,16 +204,4 @@ public class ActivityMain extends AppCompatActivity {
                 .into(background);
     }
 
-    private void save(int filterOption) {
-        SharedPreferences pref = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putInt("filter", filterOption);
-        editor.apply();
-    }
-
-    private int load() {
-        SharedPreferences pref = getPreferences(MODE_PRIVATE);
-        int filterOption = pref.getInt("filter", Filter.NONE);
-        return filterOption;
-    }
 }
