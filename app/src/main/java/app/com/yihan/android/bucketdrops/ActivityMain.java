@@ -98,6 +98,7 @@ public class ActivityMain extends AppCompatActivity {
 
         mResults = mRealm.where(Drop.class).findAllAsync();
         mAdapter = new AdapterDrops(this, mRealm, mResults, mAddListener, mMarkListener);
+        mAdapter.setHasStableIds(true);
         mRecyclerView.setAdapter(mAdapter);
 
         mEmptyView = findViewById(R.id.empty_drop);
