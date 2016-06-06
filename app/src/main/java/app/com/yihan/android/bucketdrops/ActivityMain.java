@@ -23,6 +23,7 @@ import app.com.yihan.android.bucketdrops.adapters.CompleteListener;
 import app.com.yihan.android.bucketdrops.adapters.Divider;
 import app.com.yihan.android.bucketdrops.adapters.Filter;
 import app.com.yihan.android.bucketdrops.adapters.MarkListener;
+import app.com.yihan.android.bucketdrops.adapters.ResetListener;
 import app.com.yihan.android.bucketdrops.adapters.SimpleTouchCallback;
 import app.com.yihan.android.bucketdrops.beans.Drop;
 import app.com.yihan.android.bucketdrops.widgets.BucketRecyclerView;
@@ -80,6 +81,14 @@ public class ActivityMain extends AppCompatActivity {
         }
     };
 
+    private ResetListener mResetListener = new ResetListener() {
+        @Override
+        public void onReset() {
+            AppBucketDrops.save(ActivityMain.this, Filter.NONE);
+            loadResults(Filter.NONE);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +106,7 @@ public class ActivityMain extends AppCompatActivity {
         mRealm = Realm.getDefaultInstance();
 
         mResults = mRealm.where(Drop.class).findAllAsync();
-        mAdapter = new AdapterDrops(this, mRealm, mResults, mAddListener, mMarkListener);
+        mAdapter = new AdapterDrops(this, mRealm, mResults, mAddListener, mMarkListener, mResetListener);
         mAdapter.setHasStableIds(true);
         mRecyclerView.setAdapter(mAdapter);
 
