@@ -29,6 +29,7 @@ import app.com.yihan.android.bucketdrops.adapters.MarkListener;
 import app.com.yihan.android.bucketdrops.adapters.ResetListener;
 import app.com.yihan.android.bucketdrops.adapters.SimpleTouchCallback;
 import app.com.yihan.android.bucketdrops.beans.Drop;
+import app.com.yihan.android.bucketdrops.extras.Util;
 import app.com.yihan.android.bucketdrops.services.NotificationService;
 import app.com.yihan.android.bucketdrops.widgets.BucketRecyclerView;
 import io.realm.Realm;
@@ -125,10 +126,7 @@ public class ActivityMain extends AppCompatActivity {
         int filterOption = AppBucketDrops.load(this);
         loadResults(filterOption);
 
-        AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        Intent intent = new Intent(this, NotificationService.class);
-        PendingIntent pendingIntent = PendingIntent.getService(this, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        manager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 1000, 240000, pendingIntent);
+        Util.scheduleAlarm(this);
     }
 
     @Override
