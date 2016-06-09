@@ -1,5 +1,8 @@
 package app.com.yihan.android.bucketdrops;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +29,7 @@ import app.com.yihan.android.bucketdrops.adapters.MarkListener;
 import app.com.yihan.android.bucketdrops.adapters.ResetListener;
 import app.com.yihan.android.bucketdrops.adapters.SimpleTouchCallback;
 import app.com.yihan.android.bucketdrops.beans.Drop;
+import app.com.yihan.android.bucketdrops.services.NotificationService;
 import app.com.yihan.android.bucketdrops.widgets.BucketRecyclerView;
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
@@ -100,8 +104,8 @@ public class ActivityMain extends AppCompatActivity {
         initBackgroundImage();
 
         mRecyclerView = (BucketRecyclerView) findViewById(R.id.rv_drops);
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(manager);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(layoutManager);
 
         mRealm = Realm.getDefaultInstance();
 
@@ -120,6 +124,11 @@ public class ActivityMain extends AppCompatActivity {
 
         int filterOption = AppBucketDrops.load(this);
         loadResults(filterOption);
+
+        AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(this, NotificationService.class);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        manager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 1000, 120000, pendingIntent);
     }
 
     @Override
